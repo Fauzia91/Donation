@@ -75,7 +75,7 @@ module.exports =
                 const resp = await this.UserData.create(user);
                 return user;
             } catch (e) {
-               
+                console.log(e);
                 return { status: -1 };
             }
             return { status: -1 };

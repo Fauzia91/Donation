@@ -22,7 +22,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  background-image: "melephant.jpg";
+  background-image: url("melephant.jpg");
   background-size: 100%;
   background-repeat: no-repeat;
 }
