@@ -82,7 +82,6 @@ const resolvers = {
       { lastName, firstName, email, password1, password2 }
     ) => {
       console.log("NAME:", email)
-      // updateUser = async (userId: string, password1: string, password2: string, lastName: string, firstName: string, email: string, roleId: string, status: string)
       const user = await dao.updateUser("", password1, password2, lastName, firstName, email, 1, 1);
 
       if (user && user?.status === 1) {

@@ -1,4 +1,3 @@
-
 import './App.css';
 import Login from './components/login';
 import Dashboard from './components/dashboard';
@@ -13,15 +12,14 @@ import { useNavigate } from "react-router-dom";
 
 
 function App() {
-  const [token, setToken] = useState("");// initially not token
+  const [token, setToken] = useState("");
   useEffect(() => {
     init();
   }, []);
   const navigate = useNavigate();
   const init = () => {
-    // check to see if there is a token in session.
     const token = sessionStorage.getItem("SERVER_API_TOKEN");
-
+    console.log("TOKEN:", token);
     if (token && token != null && token.length > 10) {
       setToken(token);
     } else {
@@ -29,8 +27,11 @@ function App() {
     }
   }
   const logout = () => {
+
+    console.log("App.logout");
     sessionStorage.removeItem("SERVER_API_TOKEN");
     setToken("");
+
   }
   const setTokenNext = (token, next) => {
     console.log("setTokenNext:", token);
@@ -44,7 +45,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Save the Elephants</h1>
-   
 
         <Routes>
           <Route path="/" element={

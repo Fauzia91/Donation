@@ -1,4 +1,4 @@
-//const urlLocal = 'http://localhost:3001/graphql';
+//const url = 'http://localhost:3001/graphql';
 const url = 'graphql';
 
 const SERVER_API_TOKEN = "SERVER_API_TOKEN";
@@ -27,20 +27,18 @@ export default class APIRequest {
     }
     static async logout() {
         console.log("LOGOUT:", SERVER_API_TOKEN);
-        // graphql call to server to logout
         const q = "query {logout }";
+        //console.log("getTodos.TOKEN:", q);
         const response = await APIRequest.server(q);
         const responseText = await response.text();
-        // end graphql call
+        console.log("responseText", responseText);
 
-        // remove token from client storage
         sessionStorage.removeItem(SERVER_API_TOKEN);
 
-        return responseText; // send response from server back to component
+        return responseText;
     }
     static async auth(username, password) {
         try {
-            // graphql call to server to authenticate
             const query = `mutation{
                     authenticate(name:"${username}", password:"${password}")
                 }`;
@@ -55,43 +53,46 @@ export default class APIRequest {
                 }),
             });
             const responseText = await response.text();
+            console.log("responseText", responseText);
             const responseData = JSON.parse(responseText);
             const token = responseData.data.authenticate;
-            
-            // save token to client storage
+            //console.log("responseData.token", token)
             setToken(token);
-            // return token and status to login component.
             return { status: 1, token: token, message: "registered" };
-        } catch (e) { // error occurred, notify component.
+        } catch (e) {
             return { status: -1, token: "", message: "Invalid login", error:e };
         }
     }
-    // called from register component with values from register form
     static async register(username, lastname, firstname, password1, password2) {
         try {
-            // prepare graphql call
             const query = `mutation{
                 reg(lastName: "${lastname}",firstName: "${firstname}", email:"${username}", password1:"${password1}", password2:"${password2}")
             }`;
+
+            console.log("Q:", query)
             const headers = {
                 'Content-Type': 'application/json'
             }
-            // make graphql call
             const response = await APIRequest.graphql(query);
-            // process response from server.
-            const responseText = await response.text();        
+                
+            const responseText = await response.text();
             const responseData = JSON.parse(responseText);
+            console.log("responseText", responseText);
 
-            // store token to client storage
+            if (responseText.indexOf("error:") > 0)
+            {
+                console.log("ERROR:", responseData.data.reg);
+                return { status: -1, token: "", message: responseData.data.reg, error:responseText };
+            }
+           
             const token = responseData.data.reg;
+            console.log("responseData.token", token);
             setToken(token)
-            // return status and token to register component.
             return { status: 1, token: token, message: "registered" };
-        } catch (e) {// error occurred, report to register component.
+        } catch (e) {
             return { status: -1, token: "", message: "failed registration", error:e };
         }
     }
-    // helper method to make a graphql call
     static async graphql(query, token=null) {
         token = sessionStorage.getItem(SERVER_API_TOKEN);
         const headers = token ?
@@ -136,51 +137,43 @@ export default class APIRequest {
         });
         return response;
     }
-
-    // method to make a donation from dashboard.
     static async donate(amount) {
-        // prepare graphql call
         const q = `mutation{
                     donate(amount: ${amount})
                 }`
-        // make call and get response
+        //console.log("Q:", q)
         const response = await APIRequest.server(q);
-        const responseText = await response.text();
 
-        // parse Stripe payment URL.
+        const responseText = await response.text();
+        console.log("responseText", responseText);
         const url = responseText.split("url:")[1].split('"}}')[0];
         const responseData = JSON.parse(responseText);
-
-        // return Stripe url to dashboard.
         return url;
+
     }
-    // method to get user profile
     static async getProfile() {
-        // prepare graphql call
         const q = "query {profile }";
-        // make graphql call
+
+        //console.log("Q:", q)
         const response = await APIRequest.server(q);
-        // get response
+
         const responseText = await response.text();
+        //console.log("responseText", responseText);
         const responseData = JSON.parse(responseText);
-        // parse profile data into JSON format
+        //donations = JSON.parse(responseData.data)
         const profile = JSON.parse(responseData.data.profile);
-        //return profile to dashboard.
+        //console.log("responseData", profile)
         return profile;
     }
-    // get all donations for a user
     static async getDonations() {
-        // prepare graphql call
         const q = "query {donations }";
-        //make grapql call
+        //console.log("getTodos.TOKEN:", q);
         const response = await APIRequest.server(q, token);
-        // get response
         const responseText = await response.text();
-        //parse response
+        //console.log("responseText", responseText);
         const responseData = JSON.parse(responseText);
-        // parse donations from response
         const donations = JSON.parse(responseData.data.donations)
-        //return donations to dashboard.
+        //console.log("responseData", donations)
         return donations;
     }
 }
