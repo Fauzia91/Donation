@@ -39,14 +39,21 @@ const Dashboard = ({ token, setToken }) => {
 
     return (
         <div>
-            <div>
 
+            <div className={"corner"}>
                 <p><button onClick={logout}>Logout</button></p>
-
             </div>
             <h1>Welcome {profile.firstName}</h1>
-            <p><input type="text" name="amount" id="amount" value={amount} onChange={amountHandler} placeholder="donation amount" />
-                <button onClick={donateHandler}>Donate</button></p>
+            <div className={"row center"}>
+                <div className={"row"}>
+                    <div className={"special"}>
+                    <div>$</div>
+                    <input className={"small"} type="text" name="amount" id="amount" value={amount} onChange={amountHandler} placeholder="DONATION AMOUNT" />
+                    </div>
+                <button onClick={donateHandler}>Donate</button>
+                </div>
+            </div>
+            <br/>
             <Donations donations={donations} />
         </div>
     )

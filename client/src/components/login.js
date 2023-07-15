@@ -35,12 +35,15 @@ const Login = ({ setToken }) => {
         }
     }
     return (
-        <div>
-            <p><input type="text" name="username" id="username" value={username} onChange={usernameHandler} placeholder="user name" /></p>
-            <p><input type="password" name="password" id="password" value={password} onChange={passwordHandler} placeholder="password" /></p>
-            <p><button onClick={login}>Login</button></p>
+        <div className={"vertRow"}>
+            <p><input type="text" name="username" id="username" value={username} onChange={usernameHandler} placeholder="USERNAME" /></p>
+            <p><input type="password" name="password" id="password" value={password} onChange={passwordHandler} placeholder="PASSWORD" /></p>
             <p>{message}</p>
-            <p><Link to="/reg">Register</Link></p>
+            <div className={"row flex-end"}>
+                <button onClick={login}>Login</button>
+                <Link className={"button"} to="/reg">Register</Link>
+            </div>
+
         </div>)
 }
 export default Login;

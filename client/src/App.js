@@ -44,9 +44,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Save the Elephants</h1>
+
+        <h1 className={"cornerLeft"}>Save The Elephants </h1>
 
         <Routes>
+
           <Route path="/" element={
             token ?
               <Dashboard token={token} setToken={logout} />
@@ -55,7 +57,9 @@ function App() {
           <Route path="/home" element={
             token ?
               <Dashboard token={token} setToken={logout} />
-              : <Login setToken={setToken} />} />
+              : <Login setToken={setToken} />}
+
+          />
           <Route path="/signout" element={<Login setToken={setTokenNext} />} />
 
         </Routes>

@@ -37,12 +37,20 @@ const Register = ({ setToken }) => {
         }
     }
     return (
-        <div>
-            <p><input type="text" name="username" id="username" value={username} onChange={usernameHandler} placeholder="user name" /></p>
-            <p><input type="text" name="lastName" id="lastName" value={lastName} onChange={lastNameHandler} placeholder="last name" /></p>
-            <p><input type="text" name="firstName" id="firstName" value={firstName} onChange={firstNameHandler} placeholder="first name" /></p>
-            <p><input type="password" name="password1" id="password1" value={password1} onChange={password1Handler} placeholder="password" /></p>
-            <p><input type="password" name="password2" id="password2" value={password2} onChange={password2Handler} placeholder="password" /></p>
+        <div className={"vertRow"}>
+            <p><input style={{width: "100%"}} type="text" name="username" id="username" value={username} onChange={usernameHandler} placeholder="USERNAME" /></p>
+            <div className="row">
+                <input style={{width: "50%"}} type="text" name="firstName" id="firstName" value={firstName} onChange={firstNameHandler} placeholder="FIRSTNAME" />
+
+                <input type="text" name="lastName" id="lastName" value={lastName} onChange={lastNameHandler} placeholder="LASTNAME" />
+
+            </div>
+
+            <div className="row">
+                <input type="password" name="password1" id="password1" value={password1} onChange={password1Handler} placeholder="password" />
+                <input type="password" name="password2" id="password2" value={password2} onChange={password2Handler} placeholder="password comfirm" />
+            </div>
+
             <p><button onClick={register}>Register</button></p>
             <p>{message}</p>
         </div>)
